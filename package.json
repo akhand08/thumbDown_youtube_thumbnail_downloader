@@ -1,0 +1,21 @@
+{
+  "name": "thumbdown-youtube-thumbnail-downloader",
+  "version": "1.0.0",
+  "description": "A simple thumbnail downloader CLI app ",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "CLI",
+    "thumbnail_downloader"
+  ],
+  "type": "module",
+  "author": "Abdullah Al Adib Akhand",
+  "license": "ISC",
+  "dependencies": {
+    "@clack/prompts": "^0.7.0",
+    "axios": "^1.7.2",
+    "picocolors": "^1.0.1"
+  }
+}
