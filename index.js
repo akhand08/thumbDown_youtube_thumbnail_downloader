@@ -1,5 +1,6 @@
-import {intro, outro, select} from "@clack/prompts";
+import {intro, outro, select, text} from "@clack/prompts";
 import pc from 'picocolors'
+import axios from 'axios'
 
 
 intro(pc.bgGreen(`Welcome to ${pc.bgRed("ThumbDown ")} - Youtube Video Thumbnail Download`));
@@ -22,7 +23,15 @@ async function mainDownloader() {
             break;
         }
         else {
-            console.log("Working");
+            const videoLink = await text({
+                "message": pc.bold(pc.blue("Please type or paste your youtube video link: ")),
+                placeholder: "type video link...",
+                validate(value) {
+                    if (value.length === 0 ) return "Please write a valid youtube video link"
+                }
+            })
+
+            console.log(videoLink);
         }
     } 
 
