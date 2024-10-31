@@ -1,8 +1,16 @@
 import {intro, outro, select, text} from "@clack/prompts";
 import pc from 'picocolors'
 import axios from 'axios'
+import * as fs from "fs"
 
 
+
+
+const extractVideoID = (videoLink) => {
+    let match = videoLink.match(/(?:youtu.be\/|youtube.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=))([^?&]+)/i);
+    return match[1]
+
+}
 intro(pc.bgGreen(`Welcome to ${pc.bgRed("ThumbDown ")} - Youtube Video Thumbnail Download`));
 
 
@@ -31,7 +39,45 @@ async function mainDownloader() {
                 }
             })
 
-            console.log(videoLink);
+            const resolution = await select({
+
+                "message": "Choose your preferred resolution",
+                options: [
+                    { value: "maxresdefault", label: pc.green("High Resolution: 1280 x 720 pixel")},
+                    { value: "sddefault", label: pc.green("Medium Resolution: 480 x 360 pixel")},
+                    { value: "default", label: pc.green("Low Resolution: 120 x 90 pixel")},
+                    
+                ]
+            })
+
+            let videoId = extractVideoID(videoLink)
+            let img_url = "https://img.youtube.com/vi/" + videoId + "/" + resolution + ".jpg";
+            let imgFileName = videoId + ".jpg";
+
+            axios.get(img_url, {responseType: "arraybuffer"})
+            .then((response) => {
+                let imageBlob = response.data;
+                
+
+                fs.writeFile(imgFileName,imageBlob, (err) => {
+                    if(!err) {
+                        console.log("Thumbnail has been saved");
+                    }
+                    else {
+
+                        console.log("Sorry we cannot downlaod this thumbnail");
+
+                    }
+                })
+                
+            })
+            .catch((error) => {
+                console.log(error);
+            })
+
+
+
+            
         }
     } 
 
